@@ -20,11 +20,13 @@ type colorRGB struct {
 }
 
 var (
-	firePixelsArray   []int
-	fireWidth         int
-	fireHeight        int
-	debug             bool
-	fireColorsPalette [37]colorRGB
+	firePixelsArray     []int
+	fireWidth           int
+	fireHeight          int
+	debug               bool
+	fireColorsPalette   [37]colorRGB
+	globalFireVariation int
+	asciiArt            string
 )
 
 const (
@@ -75,6 +77,7 @@ func initiateFireColorsPalette() {
 }
 
 func instatiateDataArray() {
+	globalFireVariation = 0
 	var numberOfPixels int = fireWidth * fireHeight
 	for index := 0; index < numberOfPixels; index++ {
 		firePixelsArray = append(firePixelsArray, minFire)
@@ -133,13 +136,15 @@ func calculateFirePropagation() {
 }
 
 func updateFireIntensityPerPixel(currentIndex int) {
+	globalFireVariation += 1
+
 	belowPixelIndex := currentIndex + fireWidth
 
 	if belowPixelIndex >= fireWidth*fireHeight {
 		return
 	}
 
-	decay := rand.Intn(7)
+	decay := rand.Intn(8)
 	if decay < 0 {
 		decay *= -1
 	}
@@ -162,6 +167,7 @@ func clearTerminal() {
 }
 
 func renderFire() {
+	fmt.Println(asciiArt, "\n\n")
 	for row := 0; row < fireHeight; row++ {
 		for column := 0; column < fireWidth; column++ {
 
@@ -178,7 +184,23 @@ func renderFire() {
 	}
 }
 
+func initAnimTitle() {
+	asciiArt =
+		`
+------------------------------------------------------------------------------------------------
+|  ____                      _____  _              _           _____            _         _    |
+|  |    \  ___  ___  _____   |   __||_| ___  ___   | |_  _ _   |     | ___  ___ | |_  ___ | |  |
+|  |  |  || . || . ||     |  |   __|| ||  _|| -_|  | . || | |  |-   -||  _|| .'||   || -_|| |  | 
+|  |____/ |___||___||_|_|_|  |__|   |_||_|  |___|  |___||_  |  |_____||_|  |__,||_|_||___||_|  |
+|                                                       |___|                                  |
+------------------------------------------------------------------------------------------------
+`
+
+}
+
 func main() {
+	initAnimTitle()
+
 	setFire(100, 30)
 	initiateFireColorsPalette()
 	instatiateDataArray()
@@ -190,4 +212,11 @@ func main() {
 		time.Sleep(time.Millisecond * 10)
 	}
 
+	/*
+		fmt.Print("teste")
+		cmd := exec.Command("\002") //Windows example, its tested
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+		fmt.Print("\1A isso é um ")
+	*/
 }
