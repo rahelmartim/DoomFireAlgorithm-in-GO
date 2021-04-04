@@ -211,12 +211,4 @@ func main() {
 		calculateFirePropagation()
 		time.Sleep(time.Millisecond * 10)
 	}
-
-	/*
-		fmt.Print("teste")
-		cmd := exec.Command("\002") //Windows example, its tested
-		cmd.Stdout = os.Stdout
-		cmd.Run()
-		fmt.Print("\1A isso é um ")
-	*/
 }
